@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>PIP 每日聖經金句推送</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+</head>
+
+<body>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<form th:action="@{/next}" method="POST" id="nextForm" onsubmit="return validateForm()">
+<div class="container">
+	<div class="col-sm-5 ">
+		<h3><img th:src="@{img/dbv.jpg}" width="52" /> PIP 每日聖經金句電郵推送</h3>
+		<p><span th:style="'color: red;'" th:text="${message}">message</span></p>
+		<div class="list-group">
+			<p><hr/></p>
+			<p>
+				請輸入電郵地址登記每日聖經金句推送:
+				<input type="email" class="form-control" name="subscribe" aria-describedby="emailHelp">
+			</p>
+			<p><br/></p>
+			<p>
+				如想取消登記，請輸入電郵地址:
+				<input type="email" class="form-control" name="unsubscribe" aria-describedby="emailHelp">
+			</p>
+			<p><hr/></p>
+			<div class="g-recaptcha" th:data-sitekey="${@environment.getProperty('recaptcha.site.key')}"></div>
+			<br/>
+			<input type="hidden" name="captcha-response" />
+			<input type="submit" value="確定" class="btn btn-primary" />
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+function validateForm() {
+	oFormObject = document.forms['nextForm'];
+	var input1 = oFormObject.elements["subscribe"].value;
+	var input2 = oFormObject.elements["unsubscribe"].value;
+	if (input1 == "" && input2 == "") {
+		alert("Please input at least 1 field!");
+		return false;
+	}
+	
+	if (grecaptcha.getResponse()) {
+		oFormObject.elements["captcha-response"].value = grecaptcha.getResponse();
+		return true;
+	} else {
+		alert("Please prove that you're not a robot!");
+		return false;
+	}
+}
+</script>
+
+</body>
+</html>
